@@ -30,6 +30,36 @@ class EdCert(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
+    file = models.FileField(upload_to='babali babooooo')#todo
 
+
+class Department(models.Model):
+    name = models.CharField(max_length=20)
+
+# ino shayad bayad jabeja onim todo
+class Field(models.Model):
+    name = models.CharField(max_length=20)
+    group = models.CharField(max_length=20)
+    department = models.ForeignKey(to=Department)
+    credits = models.IntegerField()
+    degree = models.IntegerField()
+
+class SelectedCourse(models.Model):
+    student = models.ForeignKey(to=Student)
+    courses = models.ManyToManyField(to=TermicCourse)
+    admitted = models.BooleanField(default=False)
+
+class Term(models.Model):
+    name = models.CharField(max_length=20)
+    students = models.ManyToManyField(to=Student)
+    professors = models.ManyToManyField(to=Professor)
+    courses = models.ManyToManyField(to=TermicCourse)
+    selection_start = models.DateTimeField()
+    selection_end = models.DateTimeField()
+    fix_start = models.DateTimeField()
+    fix_end = models.DateTimeField()
+    emergency_drop_end = models.DateTimeField()
+    exam_start = models.DateTimeField()
+    term_end = models.DateTimeField()
 
 
