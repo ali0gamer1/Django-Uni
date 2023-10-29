@@ -1,0 +1,44 @@
+from django.db import models
+from groups.models import *
+from course.models import *
+from daneshgah.models import *
+# Create your models here.
+
+class User(models.Model):
+    name = models.CharField(max_length=20)
+    uniquenum = models.CharField(max_length=20)
+    password = models.CharField(max_length=20)
+    # pfp = image todo
+    email = models.EmailField(max_length=50)
+    phone_number = models.CharField(max_length=11)
+    national_id = models.CharField(max_length=10)
+    gender =  models.CharField(max_length=255)# IS FEMALE CHERT BOOD
+    birth_date = models.DateField
+#todo @D sorry for these prototypes, I required them for my models.
+class Student(User):
+    start_year = models.DateField()#IN HAM MITONE INT BASHE HAM DATE\
+    start_term = models.DateField()
+    average_mark = models.FloatField()
+    department = models.ForeignKey(Department)
+    field = models.ForeignKey(Field)
+    passed_courses = None #todo
+    current_courses = None #todo
+    supervisor = models.ForeignKey(Professor)
+    military_service = models.BooleanField(default=False)
+    sanavat =models.IntegerField()
+
+class Professor(User):
+    department = models.ForeignKey(Department)
+    field = models.ForeignKey(Field)
+    expertise = models.CharField(max_length=100)
+    level = models.CharField(max_length=100)
+    taught_courses = models.ManyToManyField(AbstractCourse)
+
+
+
+class IT(User):
+    pass
+
+class DeputyofEducation(User):
+    department = models.ForeignKey(to=Department)
+    field = models.ForeignKey(to=Field)
