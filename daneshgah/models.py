@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import *
+from user.models import Professor, Student
 from course.models import *
 # Create your models here.
 class RevisionRequest(models.Model):
