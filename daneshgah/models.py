@@ -61,6 +61,7 @@ class Student(User):
     sanavat =models.IntegerField()
 
 class IT(User):
+    # implement an admin panel for this
     pass
 
 class DeputyofEducation(User):
