@@ -14,7 +14,6 @@ class User(models.Model):
     national_id = models.CharField(max_length=10)
     gender =  models.CharField(max_length=255)# IS FEMALE CHERT BOOD
     birth_date = models.DateField
-#todo @D sorry for these prototypes, I required them for my models.
 class Student(User):
     start_year = models.DateField()#IN HAM MITONE INT BASHE HAM DATE\
     start_term = models.DateField()
@@ -42,3 +41,7 @@ class IT(User):
 class DeputyofEducation(User):
     department = models.ForeignKey(to=Department)
     field = models.ForeignKey(to=Field)
+class DeputyofEducationSerializer(serializers.Serializer):# noqa
+    class Meta:
+        model = DeputyofEducation
+        fields = '__all__'
