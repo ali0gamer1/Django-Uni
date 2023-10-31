@@ -2,6 +2,18 @@ from django.db import models
 from user.models import Professor, Student
 from course.models import *
 # Create your models here.
+class Term(models.Model):
+    name = models.CharField(max_length=20)
+    students = models.ManyToManyField(to=Student)
+    professors = models.ManyToManyField(to=Professor)
+    courses = models.ManyToManyField(to=TermicCourse)
+    selection_start = models.DateTimeField()
+    selection_end = models.DateTimeField()
+    fix_start = models.DateTimeField()
+    fix_end = models.DateTimeField()
+    emergency_drop_end = models.DateTimeField()
+    exam_start = models.DateTimeField()
+    term_end = models.DateTimeField()
 class RevisionRequest(models.Model):
     student = models.ForeignKey(Student)
     course = models.ForeignKey(TermicCourse)
@@ -49,17 +61,6 @@ class SelectedCourse(models.Model):
     courses = models.ManyToManyField(to=TermicCourse)
     admitted = models.BooleanField(default=False)
 
-class Term(models.Model):
-    name = models.CharField(max_length=20)
-    students = models.ManyToManyField(to=Student)
-    professors = models.ManyToManyField(to=Professor)
-    courses = models.ManyToManyField(to=TermicCourse)
-    selection_start = models.DateTimeField()
-    selection_end = models.DateTimeField()
-    fix_start = models.DateTimeField()
-    fix_end = models.DateTimeField()
-    emergency_drop_end = models.DateTimeField()
-    exam_start = models.DateTimeField()
-    term_end = models.DateTimeField()
+
 
 

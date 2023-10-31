@@ -21,8 +21,8 @@ class Student(User):
     average_mark = models.FloatField()
     department = models.ForeignKey(Department)
     field = models.ForeignKey(Field)
-    passed_courses = None #todo
-    current_courses = None #todo
+    passed_courses = models.ManyToManyField(TermicCourse) #todo
+    current_courses = models.ManyToManyField(TermicCourse) #todo
     supervisor = models.ForeignKey(Professor)
     military_service = models.BooleanField(default=False)
     sanavat =models.IntegerField()
