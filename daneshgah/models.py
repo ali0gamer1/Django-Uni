@@ -10,13 +10,13 @@ class Department(models.Model):
 class Field(models.Model):
     name = models.CharField(max_length=20)
     group = models.CharField(max_length=20)
-    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     credits = models.IntegerField()
     degree = models.IntegerField()
     
 class AbstractCourse(models.Model):
     name = models.CharField(max_length=20)
-    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     dependencies = models.ManyToManyField('AbstractCourse', blank=True, related_name="parents")
     necessities = models.ManyToManyField('AbstractCourse', blank=True, related_name="sisters")
     credit = models.IntegerField()
@@ -64,8 +64,8 @@ class IT(User):
     pass
 
 class DeputyofEducation(User):
-    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
-    field = models.ForeignKey(to=Field, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
 
 class Term(models.Model):
     name = models.CharField(max_length=20)
@@ -117,6 +117,6 @@ class EdCert(models.Model):
         default = 'settings.MEDIA_ROOT/educerts/nothing.pdf')
 
 class SelectedCourse(models.Model):
-    student = models.ForeignKey(to=Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     courses = models.ManyToManyField(TermicCourse, related_name="courses2")
     admitted = models.BooleanField(default=False)
