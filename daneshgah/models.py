@@ -23,7 +23,7 @@ class User(models.Model):
     name = models.CharField(max_length=20)
     uniquenum = models.CharField(max_length=20)
     password = models.CharField(max_length=20)
-    #pfp = models.FileField(upload_to=
+    pfp = models.FileField(upload_to='/pfps')
     email = models.EmailField(max_length=50)
     phone_number = models.CharField(max_length=11)
     national_id = models.CharField(max_length=10)
@@ -108,7 +108,7 @@ class EdCert(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-    file = models.FileField(upload_to='babali babooooo')
+    file = models.FileField(upload_to='/edcerts')
 
 class SelectedCourse(models.Model):
     student = models.ForeignKey(to=Student)
