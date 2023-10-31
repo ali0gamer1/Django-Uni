@@ -21,11 +21,8 @@ class AbstractCourse(models.Model):
     course_type = models.CharField(max_length=20)
 
 class User(AbstractUser):
-    name = models.CharField(max_length=20)
     uniquenum = models.CharField(max_length=20)
-    password = models.CharField(max_length=20)
     #pfp = models.FileField(upload_to='/pfps')
-    email = models.EmailField(max_length=50)
     phone_number = models.CharField(max_length=11)
     national_id = models.CharField(max_length=10)
     gender = models.BooleanField(default=False)
