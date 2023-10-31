@@ -15,8 +15,8 @@ class Field(models.Model):
 class AbstractCourse(models.Model):
     name = models.CharField(max_length=20)
     department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
-    dependencies = models.ManyToManyField('AbstractCourse', blank=True)
-    necessities = models.ManyToManyField('AbstractCourse', blank=True)
+    dependencies = models.ManyToManyField('AbstractCourse', blank=True, related_name="parents")
+    necessities = models.ManyToManyField('AbstractCourse', blank=True, related_name="sisters")
     credit = models.IntegerField()
     course_type = models.CharField(max_length=20)
 
@@ -33,13 +33,13 @@ class Professor(User):
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     expertise = models.CharField(max_length=100)
     level = models.CharField(max_length=100)
-    taught_courses = models.ManyToManyField(AbstractCourse)
+    taught_courses = models.ManyToManyField(AbstractCourse, related_name="professorsdone")
 
 class TermicCourse(AbstractCourse):
     course_time = models.TextField()
     exam_date = models.DateTimeField()
     exam_location = models.CharField(max_length=255)
-    professor = models.ManyToManyField(to=Professor)
+    professor = models.ManyToManyField(Professor, related_name="termiccourses")
     capaciry = models.IntegerField()
     term = models.IntegerField()
 
@@ -49,8 +49,8 @@ class Student(User):
     average_mark = models.FloatField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
-    passed_courses = models.ManyToManyField(TermicCourse)
-    current_courses = models.ManyToManyField(TermicCourse)
+    passed_courses = models.ManyToManyField(TermicCourse, related_name="studentswhopassed")
+    current_courses = models.ManyToManyField(TermicCourse, related_name="studentsstudying")
     supervisor = models.ForeignKey(Professor, on_delete=models.CASCADE)
     military_service = models.BooleanField(default=False)
     sanavat =models.IntegerField()
@@ -64,9 +64,9 @@ class DeputyofEducation(User):
 
 class Term(models.Model):
     name = models.CharField(max_length=20)
-    students = models.ManyToManyField(to=Student)
-    professors = models.ManyToManyField(to=Professor)
-    courses = models.ManyToManyField(to=TermicCourse)
+    students = models.ManyToManyField(Student, related_name="terms")
+    professors = models.ManyToManyField(Professor, related_name="asatid")
+    courses = models.ManyToManyField(TermicCourse, related_name="courses")
     selection_start = models.DateTimeField()
     selection_end = models.DateTimeField()
     fix_start = models.DateTimeField()
@@ -85,7 +85,7 @@ class CourseStudent(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     mark = models.FloatField(default=20.0)
-    term = models.ManyToManyField(Term)
+    term = models.ManyToManyField(Term, related_name="FixME")
 
 class EmergencyDrop(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -110,5 +110,5 @@ class EdCert(models.Model):
 
 class SelectedCourse(models.Model):
     student = models.ForeignKey(to=Student, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(to=TermicCourse)
+    courses = models.ManyToManyField(TermicCourse, related_name="courses2")
     admitted = models.BooleanField(default=False)
