@@ -23,11 +23,11 @@ class AbstractCourse(models.Model):
     course_type = models.CharField(max_length=20)
 
 class User(AbstractUser):
-    uniquenum = models.CharField(max_length=20)
-    phone_number = models.CharField(max_length=11)
-    national_id = models.CharField(max_length=10)
+    uniquenum = models.CharField(max_length=20, default = "-1") ####### for creating a super user (temporary)
+    phone_number = models.CharField(max_length=11, default="-1")
+    national_id = models.CharField(max_length=10, default="-1")
     gender = models.BooleanField(default=False)
-    birth_date = models.DateField()
+    birth_date = models.DateField(default="2000-01-01")
     pfp = models.FileField(
         storage = FileSystemStorage(location=settings.MEDIA_ROOT),
         upload_to = 'portraits',
@@ -39,7 +39,9 @@ class Professor(User):
     expertise = models.CharField(max_length=100)
     level = models.CharField(max_length=100)
     taught_courses = models.ManyToManyField(AbstractCourse, related_name="professorsdone")
-
+    class Meta:
+        verbose_name = "Professor"
+        verbose_name_plural = "Professors"
 class TermicCourse(AbstractCourse):
     course_time = models.TextField()
     exam_date = models.DateTimeField()
@@ -59,14 +61,26 @@ class Student(User):
     supervisor = models.ForeignKey(Professor, on_delete=models.CASCADE)
     military_service = models.BooleanField(default=False)
     sanavat =models.IntegerField()
-
+    
+    class Meta:
+        verbose_name = "Student"
+        verbose_name_plural = "Students"
 class IT(User):
     # implement an admin panel for this
-    pass
+    def __str__(self) -> str:
+        return "IT"
+    class Meta:
+        verbose_name = "IT"
+        verbose_name_plural = "ITs"
+    
 
 class DeputyofEducation(User):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = "Deputy of Education"
+        verbose_name_plural = "Deputy of Educations"
 
 class Term(models.Model):
     name = models.CharField(max_length=20)
