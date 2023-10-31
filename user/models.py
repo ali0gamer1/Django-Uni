@@ -41,7 +41,3 @@ class IT(User):
 class DeputyofEducation(User):
     department = models.ForeignKey(to=Department)
     field = models.ForeignKey(to=Field)
-class DeputyofEducationSerializer(serializers.Serializer):# noqa
-    class Meta:
-        model = DeputyofEducation
-        fields = '__all__'

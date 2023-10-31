@@ -15,3 +15,7 @@ class ITSerializer(serializers.Serializer):# noqa
     class Meta:
         model = IT
         fields = '__all__'
+class DeputyofEducationSerializer(serializers.Serializer):# noqa
+    class Meta:
+        model = DeputyofEducation
+        fields = '__all__'
