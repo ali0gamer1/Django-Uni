@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 
 class Department(models.Model):
@@ -22,11 +24,14 @@ class AbstractCourse(models.Model):
 
 class User(AbstractUser):
     uniquenum = models.CharField(max_length=20)
-    #pfp = models.FileField(upload_to='/pfps')
     phone_number = models.CharField(max_length=11)
     national_id = models.CharField(max_length=10)
     gender = models.BooleanField(default=False)
     birth_date = models.DateField()
+    pfp = models.FileField(
+        storage = FileSystemStorage(location=settings.MEDIA_ROOT),
+        upload_to = 'portraits',
+        default = 'settings.MEDIA_ROOT/portraits/anon.png')
 
 class Professor(User):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -106,7 +111,10 @@ class EdCert(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-    #file = models.FileField(upload_to='/edcerts')
+    file = models.FileField(
+        storage = FileSystemStorage(location=settings.MEDIA_ROOT),
+        upload_to = 'educerts',
+        default = 'settings.MEDIA_ROOT/educerts/nothing.pdf')
 
 class SelectedCourse(models.Model):
     student = models.ForeignKey(to=Student, on_delete=models.CASCADE)
