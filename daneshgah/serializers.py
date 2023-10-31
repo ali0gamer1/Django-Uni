@@ -1,4 +1,6 @@
-from models import *
+from models import (User, Student, Professor, IT, DeputyofEducation, Term, RevisionRequest,
+                    CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse)
+
 
 class UserSerializer(serializers.Serializer):
     class Meta:
