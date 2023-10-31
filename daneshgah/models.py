@@ -1,6 +1,8 @@
 from django.db import models
-from user.models import Professor, Student
+from user.models import Student
+from user.models import Professor
 from course.models import *
+
 # Create your models here.
 class Term(models.Model):
     name = models.CharField(max_length=20)
