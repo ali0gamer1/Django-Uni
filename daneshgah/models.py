@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 class Department(models.Model):
@@ -7,23 +8,23 @@ class Department(models.Model):
 class Field(models.Model):
     name = models.CharField(max_length=20)
     group = models.CharField(max_length=20)
-    department = models.ForeignKey(to=Department)
+    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
     credits = models.IntegerField()
     degree = models.IntegerField()
     
 class AbstractCourse(models.Model):
     name = models.CharField(max_length=20)
-    department = models.ForeignKey(to=Department)
-    dependencies = models.ManyToManyField('AbstractUser', blank=True)
+    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
+    dependencies = models.ManyToManyField('AbstractCourse', blank=True)
     necessities = models.ManyToManyField('AbstractCourse', blank=True)
     credit = models.IntegerField()
-    course_type = models.CharField()
+    course_type = models.CharField(max_length=20)
 
-class User(models.Model):
+class User(AbstractUser):
     name = models.CharField(max_length=20)
     uniquenum = models.CharField(max_length=20)
     password = models.CharField(max_length=20)
-    pfp = models.FileField(upload_to='/pfps')
+    #pfp = models.FileField(upload_to='/pfps')
     email = models.EmailField(max_length=50)
     phone_number = models.CharField(max_length=11)
     national_id = models.CharField(max_length=10)
@@ -31,8 +32,8 @@ class User(models.Model):
     birth_date = models.DateField()
 
 class Professor(User):
-    department = models.ForeignKey(Department)
-    field = models.ForeignKey(Field)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
     expertise = models.CharField(max_length=100)
     level = models.CharField(max_length=100)
     taught_courses = models.ManyToManyField(AbstractCourse)
@@ -49,11 +50,11 @@ class Student(User):
     start_year = models.DateField()
     start_term = models.DateField()
     average_mark = models.FloatField()
-    department = models.ForeignKey(Department)
-    field = models.ForeignKey(Field)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
     passed_courses = models.ManyToManyField(TermicCourse)
     current_courses = models.ManyToManyField(TermicCourse)
-    supervisor = models.ForeignKey(Professor)
+    supervisor = models.ForeignKey(Professor, on_delete=models.CASCADE)
     military_service = models.BooleanField(default=False)
     sanavat =models.IntegerField()
 
@@ -61,8 +62,8 @@ class IT(User):
     pass
 
 class DeputyofEducation(User):
-    department = models.ForeignKey(to=Department)
-    field = models.ForeignKey(to=Field)
+    department = models.ForeignKey(to=Department, on_delete=models.CASCADE)
+    field = models.ForeignKey(to=Field, on_delete=models.CASCADE)
 
 class Term(models.Model):
     name = models.CharField(max_length=20)
@@ -78,39 +79,39 @@ class Term(models.Model):
     term_end = models.DateTimeField()
 
 class RevisionRequest(models.Model):
-    student = models.ForeignKey(Student)
-    course = models.ForeignKey(TermicCourse)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     request = models.TextField()
     response = models.TextField()
 
 class CourseStudent(models.Model):
-    student = models.ForeignKey(Student)
-    course = models.ForeignKey(TermicCourse)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     mark = models.FloatField(default=20.0)
     term = models.ManyToManyField(Term)
 
 class EmergencyDrop(models.Model):
-    student = models.ForeignKey(Student)
-    course = models.ForeignKey(TermicCourse)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
 
 class TermDrop(models.Model):
-    student = models.ForeignKey(Student)
-    term = models.ForeignKey(Term)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
 
 class EdCert(models.Model):
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-    file = models.FileField(upload_to='/edcerts')
+    #file = models.FileField(upload_to='/edcerts')
 
 class SelectedCourse(models.Model):
-    student = models.ForeignKey(to=Student)
+    student = models.ForeignKey(to=Student, on_delete=models.CASCADE)
     courses = models.ManyToManyField(to=TermicCourse)
     admitted = models.BooleanField(default=False)
