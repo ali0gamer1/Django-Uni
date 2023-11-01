@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 
-class TheUserManager(UserManager):
+class UserManager(BaseUserManager):
     def create_superuser(self, email, password):
         user = self.create_user(email, password)
         user.is_admin = True
