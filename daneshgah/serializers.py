@@ -2,72 +2,72 @@ from .models import (User, Student, Professor, IT, DeputyofEducation, Term, Revi
                     CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse)
 from rest_framework import serializers
 
-class UserSerializer(serializers.Serializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
 
-class StudentSerializer(serializers.Serializer):
+class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
 
-class ProfessorSerializer(serializers.Serializer):
+class ProfessorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professor
         fields = '__all__'
 
-class ITSerializer(serializers.Serializer):
+class ITSerializer(serializers.ModelSerializer):
     class Meta:
         model = IT
         fields = '__all__'
 
-class DeputyofEducationSerializer(serializers.Serializer):
+class DeputyofEducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeputyofEducation
         fields = '__all__'
 
-class TermSerializer(serializers.Serializer):
+class TermSerializer(serializers.ModelSerializer):
     class Meta:
         model = Term
         fields = '__all__'
 
-class RevisionRequestSerializer(serializers.Serializer):
+class RevisionRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = RevisionRequest
         fields = '__all__'
 
-class CourseStudentSerializer(serializers.Serializer):
+class CourseStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseStudent
         fields = '__all__'
 
-class EmergencyDropSerializer(serializers.Serializer):
+class EmergencyDropSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmergencyDrop
         fields = '__all__'
 
-class TermDropSerializer(serializers.Serializer):
+class TermDropSerializer(serializers.ModelSerializer):
     class Meta:
         model = TermDrop
         fields = '__all__'
 
-class EdCertSerializer(serializers.Serializer):
+class EdCertSerializer(serializers.ModelSerializer):
     class Meta:
         model = EdCert
         fields = '__all__'
 
-class DepartmentSerializer(serializers.Serializer):
+class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = '__all__'
 
-class FieldSerializer(serializers.Serializer):
+class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
         fields = '__all__'
 
-class SelectedCourseSerializer(serializers.Serializer):
+class SelectedCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = SelectedCourse
         fields = '__all__'
