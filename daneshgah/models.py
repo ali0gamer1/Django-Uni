@@ -14,7 +14,7 @@ class Field(models.Model):
     group = models.CharField(max_length=20)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     credits = models.IntegerField()
-    degree = models.IntegerField()
+    degree = models.CharField(max_length=20)
     def __str__(self):
         return self.name + self.group
 
