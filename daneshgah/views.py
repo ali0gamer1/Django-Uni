@@ -42,6 +42,7 @@ class LoginAPIView(APIView):
 class LogoutAPIView(APIView):
     def post(self, request):
         request.auth.delete()
+        logout(request)
         return Response({"log_out": "successfully logged out"})
 
 class ChangePasswordAPIView(APIView):
@@ -55,4 +56,4 @@ class ChangePasswordAPIView(APIView):
             user.password = newPassword
             return Response({"status": "ChangedPassword"})
         else:
-            return Response({"error": "Invalid username or password"}, status=400)
+            return Response({"error": "Unable to change password!"}, status=400)
