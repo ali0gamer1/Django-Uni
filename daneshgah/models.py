@@ -16,16 +16,18 @@ class Field(models.Model):
     credits = models.IntegerField()
     degree = models.IntegerField()
     def __str__(self):
-        return self.name
+        return self.name + self.group
+
 class AbstractCourse(models.Model):
     name = models.CharField(max_length=20)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    dependencies = models.ManyToManyField('AbstractCourse', blank=True, related_name="parents")
+    dependencies = models.ManyToManyField('AbstractCourse', blank=True, related_name="children")
     necessities = models.ManyToManyField('AbstractCourse', blank=True, related_name="sisters")
     credit = models.IntegerField()
     course_type = models.CharField(max_length=20)
     def __str__(self):
         return self.name
+
 class User(AbstractUser):
     uniquenum = models.CharField(max_length=20, default = "-1") ####### for creating a super user (temporary)
     phone_number = models.CharField(max_length=11, default="-1")
@@ -38,6 +40,7 @@ class User(AbstractUser):
         default = 'settings.MEDIA_ROOT/portraits/anon.png')
     def __str__(self):
         return self.username
+
 class Professor(User):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
@@ -49,6 +52,7 @@ class Professor(User):
         verbose_name_plural = "Professors"
     def __str__(self):
         return self.username
+
 class TermicCourse(AbstractCourse):
     course_time = models.TextField()
     exam_date = models.DateTimeField()
@@ -58,6 +62,7 @@ class TermicCourse(AbstractCourse):
     term = models.IntegerField()
     def __str__(self):
         return self.name
+
 class Student(User):
     start_year = models.DateField()
     start_term = models.DateField()
@@ -74,6 +79,7 @@ class Student(User):
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
+
 class IT(User):
     # implement an admin panel for this
     def __str__(self) -> str:
@@ -81,12 +87,10 @@ class IT(User):
     class Meta:
         verbose_name = "IT"
         verbose_name_plural = "ITs"
-    
 
 class DeputyofEducation(User):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
-    
     class Meta:
         verbose_name = "Deputy of Education"
         verbose_name_plural = "Deputy of Educations"
