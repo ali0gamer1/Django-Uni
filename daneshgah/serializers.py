@@ -1,4 +1,4 @@
-from models import (User, Student, Professor, IT, DeputyofEducation, Term, RevisionRequest,
+from .models import (User, Student, Professor, IT, DeputyofEducation, Term, RevisionRequest,
                     CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse)
 from rest_framework import serializers
 
