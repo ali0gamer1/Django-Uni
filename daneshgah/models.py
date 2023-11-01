@@ -6,6 +6,8 @@ from django.conf import settings
 
 class Department(models.Model):
     name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
 
 class Field(models.Model):
     name = models.CharField(max_length=20)
@@ -13,7 +15,8 @@ class Field(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     credits = models.IntegerField()
     degree = models.IntegerField()
-    
+    def __str__(self):
+        return self.name
 class AbstractCourse(models.Model):
     name = models.CharField(max_length=20)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -21,7 +24,8 @@ class AbstractCourse(models.Model):
     necessities = models.ManyToManyField('AbstractCourse', blank=True, related_name="sisters")
     credit = models.IntegerField()
     course_type = models.CharField(max_length=20)
-
+    def __str__(self):
+        return self.name
 class User(AbstractUser):
     uniquenum = models.CharField(max_length=20, default = "-1") ####### for creating a super user (temporary)
     phone_number = models.CharField(max_length=11, default="-1")
@@ -32,7 +36,8 @@ class User(AbstractUser):
         storage = FileSystemStorage(location=settings.MEDIA_ROOT),
         upload_to = 'portraits',
         default = 'settings.MEDIA_ROOT/portraits/anon.png')
-
+    def __str__(self):
+        return self.username
 class Professor(User):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
@@ -42,6 +47,8 @@ class Professor(User):
     class Meta:
         verbose_name = "Professor"
         verbose_name_plural = "Professors"
+    def __str__(self):
+        return self.username
 class TermicCourse(AbstractCourse):
     course_time = models.TextField()
     exam_date = models.DateTimeField()
@@ -49,7 +56,8 @@ class TermicCourse(AbstractCourse):
     professor = models.ManyToManyField(Professor, related_name="termiccourses")
     capaciry = models.IntegerField()
     term = models.IntegerField()
-
+    def __str__(self):
+        return self.name
 class Student(User):
     start_year = models.DateField()
     start_term = models.DateField()
@@ -61,7 +69,8 @@ class Student(User):
     supervisor = models.ForeignKey(Professor, on_delete=models.CASCADE)
     military_service = models.BooleanField(default=False)
     sanavat =models.IntegerField()
-    
+    def __str__(self):
+        return self.username
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
