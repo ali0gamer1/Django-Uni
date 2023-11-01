@@ -38,6 +38,21 @@ class LoginAPIView(APIView):
         else:
             return Response({"error": "Invalid username or password"}, status=400)
 
+
 class LogoutAPIView(APIView):
     def post(self, request):
-        logout(request)
+        request.auth.delete()
+        return Response({"log_out": "successfully logged out"})
+
+class ChangePasswordAPIView(APIView):
+    def post(self, request):
+        password = request.data.get('password')
+        newPassword = request.data.get('newPassword')
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            user.password = newPassword
+            return Response({"status": "ChangedPassword"})
+        else:
+            return Response({"error": "Invalid username or password"}, status=400)
