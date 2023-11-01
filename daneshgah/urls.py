@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TermAPIView, TermListAPIView, UserAPIView, LoginAPIView, LogoutAPIView
+from .views import TermAPIView, TermListAPIView, UserAPIView, LoginAPIView, LogoutAPIView,ChangePasswordAPIView
 
 urlpatterns = [
     path("term/<int:pk>/", TermAPIView.as_view()),
@@ -7,5 +7,5 @@ urlpatterns = [
     path("users/", UserAPIView.as_view()),
     path("users/login/", LoginAPIView.as_view()),
     path("users/logout/", LogoutAPIView.as_view()),
-    path("users/changePassword", ChangepasswordAPIView().as_view())
+    path("users/changePassword", ChangePasswordAPIView.as_view())
 ]
