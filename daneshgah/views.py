@@ -4,8 +4,8 @@ from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Term, User
-from .serializers import TermSerializer, UserSerializer
+from .models import Term, User, TermicCourse
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer
 
 
 class TermListAPIView(generics.ListAPIView):
@@ -58,3 +58,12 @@ class ChangePasswordAPIView(APIView):
             return Response({"status": "ChangedPassword"})
         else:
             return Response({"error": "Unable to change password!"}, status=400)
+
+class GetAllSubjectsAPIView(generics.ListAPIView):
+    serializer_class = TermicCourseSerializer
+    model = TermicCourse
+    queryset = TermicCourse.objects.all()
+
+class CreateSubjectAPIView(generics.CreateAPIView):
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermSerializer
