@@ -4,9 +4,9 @@ from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Term, User, TermicCourse, Student
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, StudentSerializer
-
+from .models import *
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer
+from rest_framework.generics import RetrieveAPIView
 
 class TermListAPIView(generics.ListAPIView):
     serializer_class = TermSerializer
@@ -73,20 +73,21 @@ class UpdateSubjectAPIView(generics.UpdateAPIView):
 class DeleteSubjectAPIView(generics.DestroyAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
 class GetSubjectAPIView(generics.RetrieveAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
-class StudentsAPIView(APIView):
-    def post(self, request): #create student
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success"})
-        else:
-            return Response({"status": "failed"})
-    def get(self, request): #get all students
-        students = Student.objects.all()
-        serializer = StudentSerializer(students, many=True)
-        return Response(serializer.data)
 
+
+class GetAllProfessorsAPIView(generics.ListAPIView):
+    serializer_class = ProfessorSerializer
+    model = Professor
+    queryset = Professor.objects.all()
+
+class GetSpecificProfessorsAPIView(RetrieveAPIView):
+    serializer_class = ProfessorSerializer
+    queryset = Professor.objects.all()
+
+class UpdateProfessorsAPIView(generics.UpdateAPIView):
+    queryset = Professor.objects.all()
 
