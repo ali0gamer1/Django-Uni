@@ -155,3 +155,5 @@ class SelectedCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     courses = models.ManyToManyField(TermicCourse, related_name="courses2")
     admitted = models.BooleanField(default=False)
+class Subject(models.Model):
+    name = models.CharField(max_length=15)

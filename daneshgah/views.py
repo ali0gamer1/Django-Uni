@@ -66,4 +66,13 @@ class GetAllSubjectsAPIView(generics.ListAPIView):
 
 class CreateSubjectAPIView(generics.CreateAPIView):
     queryset = TermicCourse.objects.all()
-    serializer_class = TermSerializer
+    serializer_class = TermicCourseSerializer
+class UpdateSubjectAPIView(generics.UpdateAPIView):
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
+class DeleteSubjectAPIView(generics.DestroyAPIView):
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
+class GetSubjectAPIView(generics.RetrieveAPIView):
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import TermAPIView, TermListAPIView, UserAPIView, LoginAPIView, LogoutAPIView, ChangePasswordAPIView, \
-    GetAllSubjectsAPIView
+    GetAllSubjectsAPIView, CreateSubjectAPIView, UpdateSubjectAPIView, DeleteSubjectAPIView
 
 urlpatterns = [
     path("term/<int:pk>/", TermAPIView.as_view()),
@@ -10,5 +10,7 @@ urlpatterns = [
     path("users/logout/", LogoutAPIView.as_view()),
     path("users/changePassword", ChangePasswordAPIView.as_view()),
     path("subjects/get_all_subjects", GetAllSubjectsAPIView.as_view()),
-    path("subjects/create_subject", CreateSubjectAPIView.as_view())
+    path("subjects/create_subject", CreateSubjectAPIView.as_view()),
+    path("subjects/update/<int:pk>", UpdateSubjectAPIView.as_view()),
+    path("subjects/delete/<int:pk>", DeleteSubjectAPIView.as_view())
 ]
