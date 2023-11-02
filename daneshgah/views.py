@@ -50,6 +50,7 @@ class ChangePasswordAPIView(APIView):
         newPassword = request.data.get('newPassword')
         username = request.data.get('username')
         password = request.data.get('password')
+        # TODO: implement email verification
         user = authenticate(request, username=username, password=password)
         if user is not None:
             user.password = newPassword
