@@ -1,12 +1,11 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render
+from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-# Create your views here.
-from django.views.generic.edit import CreateView
-from .models import Term, User, TermicCourse
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer
+from .models import Term, User
+from .serializers import TermSerializer, UserSerializer
 
 
 class TermListAPIView(generics.ListAPIView):
@@ -46,26 +45,16 @@ class LogoutAPIView(APIView):
         logout(request)
         return Response({"log_out": "successfully logged out"})
 
-
 class ChangePasswordAPIView(APIView):
     def post(self, request):
+        password = request.data.get('password')
         newPassword = request.data.get('newPassword')
         username = request.data.get('username')
         password = request.data.get('password')
+        # TODO: implement email verification
         user = authenticate(request, username=username, password=password)
         if user is not None:
             user.password = newPassword
             return Response({"status": "ChangedPassword"})
         else:
             return Response({"error": "Unable to change password!"}, status=400)
-
-
-class GetAllSubjectsAPIView(generics.ListAPIView):
-    serializer_class = TermicCourseSerializer
-    model = TermicCourse
-    queryset = TermicCourse.objects.all()
-
-class CreateSubjectAPIView(generics.CreateAPIView):
-    queryset = TermicCourse.objects.all()
-    serializer_class = TermSerializer
-
