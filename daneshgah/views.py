@@ -4,8 +4,8 @@ from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Term, User, TermicCourse
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer
+from .models import Term, User, TermicCourse, Student
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, StudentSerializer
 
 
 class TermListAPIView(generics.ListAPIView):
@@ -76,3 +76,17 @@ class DeleteSubjectAPIView(generics.DestroyAPIView):
 class GetSubjectAPIView(generics.RetrieveAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+class StudentsAPIView(APIView):
+    def post(self, request): #create student
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "success"})
+        else:
+            return Response({"status": "failed"})
+    def get(self, request): #get all students
+        students = Student.objects.all()
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data)
+
+
