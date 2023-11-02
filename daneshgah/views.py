@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render
+from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
