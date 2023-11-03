@@ -104,4 +104,72 @@ class GetSpecificStudentsAPIView(RetrieveAPIView):
 class UpdateStudentsAPIView(generics.UpdateAPIView):
     queryset = Student.objects.all()
 
+# Subjects
+class CreateSubjectAPIView(generics.CreateAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+class ListSubjectsAPIView(generics.ListAPIView):
+    serializer_class = SubjectSerializer
+
+    def get_queryset(self):
+        faculty = self.request.query_params.get('faculty', None)
+        name = self.request.query_params.get('name', None)
+        queryset = Subject.objects.all()
+
+        if faculty:
+            queryset = queryset.filter(faculty=faculty)
+        if name:
+            queryset = queryset.filter(name=name)
+
+        return queryset
+
+class GetSubjectAPIView(generics.RetrieveAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+class UpdateSubjectAPIView(generics.UpdateAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+class DeleteSubjectAPIView(generics.DestroyAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+# Courses
+class CreateCourseAPIView(generics.CreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class ListCoursesAPIView(generics.ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        faculty = self.request.query_params.get('faculty', None)
+        name = self.request.query_params.get('name', None)
+        term = self.request.query_params.get('term', None)
+        queryset = Course.objects.all()
+
+        if faculty:
+            queryset = queryset.filter(faculty=faculty)
+        if name:
+            queryset = queryset.filter(name=name)
+        if term:
+            queryset = queryset.filter(term=term)
+
+        return queryset
+
+class GetCourseAPIView(generics.RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class UpdateCourseAPIView(generics.UpdateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class DeleteCourseAPIView(generics.DestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+
 
