@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer
 from rest_framework.generics import RetrieveAPIView
 
 class TermListAPIView(generics.ListAPIView):
@@ -90,4 +90,18 @@ class GetSpecificProfessorsAPIView(RetrieveAPIView):
 
 class UpdateProfessorsAPIView(generics.UpdateAPIView):
     queryset = Professor.objects.all()
+
+
+class GetAllStudentsAPIView(generics.ListAPIView):
+    serializer_class = StudentSerializer
+    model = Student
+    queryset = Student.objects.all()
+
+class GetSpecificStudentsAPIView(RetrieveAPIView):
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+class UpdateStudentsAPIView(generics.UpdateAPIView):
+    queryset = Student.objects.all()
+
 
