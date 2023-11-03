@@ -171,5 +171,15 @@ class DeleteCourseAPIView(generics.DestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
+# Course
+class UserCoursesByField(APIView):
+    @login_required
+    def get(self, request):
+        user = request.user
+        field_of_study = user.field_of_study
+        related_courses = Course.objects.filter(subject__field_of_study=field_of_study)
+        serialized_courses = [course.to_dict() for course in related_courses]
+        return Response({"courses": serialized_courses})
+
 
 
