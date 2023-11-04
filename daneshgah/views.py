@@ -1,11 +1,12 @@
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.core.mail import send_mail  #TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import *
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer
+from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer,  AbstractCourseSerializer
 from rest_framework.generics import RetrieveAPIView
 
 class TermListAPIView(generics.ListAPIView):
@@ -106,16 +107,16 @@ class UpdateStudentsAPIView(generics.UpdateAPIView):
 
 # Subjects
 class CreateSubjectAPIView(generics.CreateAPIView):
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
 
 class ListSubjectsAPIView(generics.ListAPIView):
-    serializer_class = SubjectSerializer
+    serializer_class = TermicCourseSerializer
 
     def get_queryset(self):
         faculty = self.request.query_params.get('faculty', None)
         name = self.request.query_params.get('name', None)
-        queryset = Subject.objects.all()
+        queryset = TermicCourse.objects.all()
 
         if faculty:
             queryset = queryset.filter(faculty=faculty)
@@ -125,30 +126,30 @@ class ListSubjectsAPIView(generics.ListAPIView):
         return queryset
 
 class GetSubjectAPIView(generics.RetrieveAPIView):
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
 
 class UpdateSubjectAPIView(generics.UpdateAPIView):
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
 
 class DeleteSubjectAPIView(generics.DestroyAPIView):
-    queryset = Subject.objects.all()
-    serializer_class = SubjectSerializer
+    queryset = TermicCourse.objects.all()
+    serializer_class = TermicCourseSerializer
 
 # Courses
 class CreateCourseAPIView(generics.CreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    queryset = AbstractCourse.objects.all()
+    serializer_class = AbstractCourseSerializer
 
 class ListCoursesAPIView(generics.ListAPIView):
-    serializer_class = CourseSerializer
+    serializer_class = AbstractCourseSerializer
 
     def get_queryset(self):
         faculty = self.request.query_params.get('faculty', None)
         name = self.request.query_params.get('name', None)
         term = self.request.query_params.get('term', None)
-        queryset = Course.objects.all()
+        queryset = AbstractCourse.objects.all()
 
         if faculty:
             queryset = queryset.filter(faculty=faculty)
@@ -160,16 +161,16 @@ class ListCoursesAPIView(generics.ListAPIView):
         return queryset
 
 class GetCourseAPIView(generics.RetrieveAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    queryset = AbstractCourse.objects.all()
+    serializer_class = AbstractCourseSerializer
 
 class UpdateCourseAPIView(generics.UpdateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    queryset = AbstractCourse.objects.all()
+    serializer_class = AbstractCourseSerializer
 
 class DeleteCourseAPIView(generics.DestroyAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    queryset = AbstractCourse.objects.all()
+    serializer_class = AbstractCourseSerializer
 
 # Course
 class UserCoursesByField(APIView):
@@ -177,7 +178,7 @@ class UserCoursesByField(APIView):
     def get(self, request):
         user = request.user
         field_of_study = user.field_of_study
-        related_courses = Course.objects.filter(subject__field_of_study=field_of_study)
+        related_courses = AbstractCourse.objects.filter(subject__field_of_study=field_of_study)
         serialized_courses = [course.to_dict() for course in related_courses]
         return Response({"courses": serialized_courses})
 

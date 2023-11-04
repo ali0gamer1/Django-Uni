@@ -13,5 +13,5 @@ urlpatterns = [
     path("subjects/create_subject", CreateSubjectAPIView.as_view()),
     path("subjects/update/<int:pk>", UpdateSubjectAPIView.as_view()),
     path("subjects/delete/<int:pk>", DeleteSubjectAPIView.as_view()),
-    path("students/"), StudentsAPIView.as_view()
+    path("students/", StudentsAPIView.as_view())
 ]
