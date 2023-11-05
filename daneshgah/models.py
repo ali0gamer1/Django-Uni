@@ -4,19 +4,19 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 
-class UserManager(BaseUserManager):
-    def create_superuser(self, email, password):
-        user = self.create_user(email, password)
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
-
 class Department(models.Model):
+    """
+    Model implementation for Department
+    """
     name = models.CharField(max_length=20)
     def __str__(self):
         return self.name
 
+
 class Field(models.Model):
+    """
+    Model implementation for Field
+    """
     name = models.CharField(max_length=20)
     group = models.CharField(max_length=20)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -25,7 +25,11 @@ class Field(models.Model):
     def __str__(self):
         return self.name + self.group
 
+
 class AbstractCourse(models.Model):
+    """
+    Model implementation for AbstractCourse
+    """
     name = models.CharField(max_length=20)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     dependencies = models.ManyToManyField('AbstractCourse', blank=True, related_name="children")
@@ -35,7 +39,11 @@ class AbstractCourse(models.Model):
     def __str__(self):
         return self.name
 
+
 class User(AbstractUser):
+    """
+    Custom User model
+    """
     uniquenum = models.CharField(max_length=20, default = "-1") ####### for creating a super user (temporary)
     phone_number = models.CharField(max_length=11, default="-1")
     national_id = models.CharField(max_length=10, default="-1")
@@ -48,7 +56,11 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Professor(User):
+    """
+    Model implementation for Professor
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     expertise = models.CharField(max_length=100)
@@ -60,7 +72,11 @@ class Professor(User):
     def __str__(self):
         return self.username
 
+
 class TermicCourse(AbstractCourse):
+    """
+    Model implementation for TermicCourse
+    """
     course_time = models.TextField()
     exam_date = models.DateTimeField()
     exam_location = models.CharField(max_length=255)
@@ -70,7 +86,11 @@ class TermicCourse(AbstractCourse):
     def __str__(self):
         return self.name
 
+
 class Student(User):
+    """
+    Model implementation for Student
+    """
     start_year = models.DateField()
     start_term = models.DateField()
     average_mark = models.FloatField()
@@ -87,22 +107,33 @@ class Student(User):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
+
 class IT(User):
-    # implement an admin panel for this
+    """
+    Model implementation for IT
+    """
     def __str__(self) -> str:
         return "IT"
     class Meta:
         verbose_name = "IT"
         verbose_name_plural = "ITs"
 
+
 class DeputyofEducation(User):
+    """
+    Model implementation for DeputyofEducation
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Deputy of Education"
         verbose_name_plural = "Deputy of Educations"
 
+
 class Term(models.Model):
+    """
+    Model implementation for Term
+    """
     name = models.CharField(max_length=20)
     students = models.ManyToManyField(Student, related_name="terms")
     professors = models.ManyToManyField(Professor, related_name="asatid")
@@ -115,33 +146,53 @@ class Term(models.Model):
     exam_start = models.DateTimeField()
     term_end = models.DateTimeField()
 
+
 class RevisionRequest(models.Model):
+    """
+    Model implementation for RevisionRequest
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     request = models.TextField()
     response = models.TextField()
 
+
 class CourseStudent(models.Model):
+    """
+    Model implementation for Course and Student relation
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     mark = models.FloatField(default=20.0)
     term = models.ManyToManyField(Term, related_name="FixME")
 
+
 class EmergencyDrop(models.Model):
+    """
+    Model implementation for EmDrop
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(TermicCourse, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
 
+
 class TermDrop(models.Model):
+    """
+    Model implementation for TermDrop
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
 
+
 class EdCert(models.Model):
+    """
+    Model implementation for Education Certificate
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     result = models.BooleanField(default=False)
     request = models.TextField()
@@ -151,9 +202,11 @@ class EdCert(models.Model):
         upload_to = 'educerts',
         default = 'settings.MEDIA_ROOT/educerts/nothing.pdf')
 
+
 class SelectedCourse(models.Model):
+    """
+    Model implementation for Course and Student relation
+    """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     courses = models.ManyToManyField(TermicCourse, related_name="courses2")
     admitted = models.BooleanField(default=False)
-class Subject(models.Model):
-    name = models.CharField(max_length=15)

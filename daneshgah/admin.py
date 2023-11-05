@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import (User, Student, Professor, IT, DeputyofEducation, Term, RevisionRequest,
-                    CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse,
-                    AbstractCourse, TermicCourse,)
-
+from .models import (
+    User, Student, Professor, IT, DeputyofEducation, Term,
+    RevisionRequest, CourseStudent, EmergencyDrop, TermDrop,
+    EdCert, Department, Field, SelectedCourse, AbstractCourse,
+    TermicCourse,
+)
 
 admin.site.register(Department)
 admin.site.register(Field)
