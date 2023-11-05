@@ -10,13 +10,6 @@ class IsProfessorPermission(permissions.BasePermission):
         return False
 
 
-class IsStudentPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if isinstance(request.user, Student):
-            return True
-        return False
-
-
 class IsITPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if isinstance(request.user, IT):
