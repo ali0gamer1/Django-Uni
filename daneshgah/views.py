@@ -6,6 +6,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User
+from .permissions import IsITPermission
 from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer,  AbstractCourseSerializer
 from rest_framework.generics import RetrieveAPIView
 
@@ -20,15 +21,16 @@ class TermAPIView(generics.RetrieveAPIView):
     model = Term
     queryset = Term.objects.all()
     lookup_field = "pk"  # pk is default
-
-
+    permission_classes = [IsITPermission]
 class UserAPIView(APIView):
+    permission_classes = [IsITPermission]
     def get(self, request):
         queryset = User.objects.all()
         return Response(UserSerializer(queryset).data)
 
 
 class LoginAPIView(APIView):
+    permission_classes = [IsITPermission]
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -41,12 +43,14 @@ class LoginAPIView(APIView):
 
 
 class LogoutAPIView(APIView):
+    permission_classes = [IsITPermission]
     def post(self, request):
         request.auth.delete()
         logout(request)
         return Response({"log_out": "successfully logged out"})
 
 class ChangePasswordAPIView(APIView):
+    permission_classes = [IsITPermission]
     def post(self, request):
         password = request.data.get('password')
         newPassword = request.data.get('newPassword')
@@ -61,17 +65,21 @@ class ChangePasswordAPIView(APIView):
             return Response({"error": "Unable to change password!"}, status=400)
 
 class GetAllSubjectsAPIView(generics.ListAPIView):
+    permission_classes = [IsITPermission]
     serializer_class = TermicCourseSerializer
     model = TermicCourse
     queryset = TermicCourse.objects.all()
 
 class CreateSubjectAPIView(generics.CreateAPIView):
+    permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
 class UpdateSubjectAPIView(generics.UpdateAPIView):
+    permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
 class DeleteSubjectAPIView(generics.DestroyAPIView):
+    permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
 
