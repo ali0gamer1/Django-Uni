@@ -1,14 +1,16 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.core.mail import send_mail  #TODO
+from django.core.mail import send_mail  # TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User
 from .permissions import IsITPermission
-from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer,  AbstractCourseSerializer
+from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer, \
+    AbstractCourseSerializer
 from rest_framework.generics import RetrieveAPIView
+
 
 class TermListAPIView(generics.ListAPIView):
     serializer_class = TermSerializer
@@ -22,8 +24,11 @@ class TermAPIView(generics.RetrieveAPIView):
     queryset = Term.objects.all()
     lookup_field = "pk"  # pk is default
     permission_classes = [IsITPermission]
+
+
 class UserAPIView(APIView):
     permission_classes = [IsITPermission]
+
     def get(self, request):
         queryset = User.objects.all()
         return Response(UserSerializer(queryset).data)
@@ -31,6 +36,7 @@ class UserAPIView(APIView):
 
 class LoginAPIView(APIView):
     permission_classes = [IsITPermission]
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -44,13 +50,16 @@ class LoginAPIView(APIView):
 
 class LogoutAPIView(APIView):
     permission_classes = [IsITPermission]
+
     def post(self, request):
         request.auth.delete()
         logout(request)
         return Response({"log_out": "successfully logged out"})
 
+
 class ChangePasswordAPIView(APIView):
     permission_classes = [IsITPermission]
+
     def post(self, request):
         password = request.data.get('password')
         newPassword = request.data.get('newPassword')
@@ -64,24 +73,31 @@ class ChangePasswordAPIView(APIView):
         else:
             return Response({"error": "Unable to change password!"}, status=400)
 
+
 class GetAllSubjectsAPIView(generics.ListAPIView):
     permission_classes = [IsITPermission]
     serializer_class = TermicCourseSerializer
     model = TermicCourse
     queryset = TermicCourse.objects.all()
 
+
 class CreateSubjectAPIView(generics.CreateAPIView):
     permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
+
 class UpdateSubjectAPIView(generics.UpdateAPIView):
     permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
+
 class DeleteSubjectAPIView(generics.DestroyAPIView):
     permission_classes = [IsITPermission]
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
 
 class GetSubjectAPIView(generics.RetrieveAPIView):
     queryset = TermicCourse.objects.all()
@@ -93,9 +109,11 @@ class GetAllProfessorsAPIView(generics.ListAPIView):
     model = Professor
     queryset = Professor.objects.all()
 
+
 class GetSpecificProfessorsAPIView(RetrieveAPIView):
     serializer_class = ProfessorSerializer
     queryset = Professor.objects.all()
+
 
 class UpdateProfessorsAPIView(generics.UpdateAPIView):
     queryset = Professor.objects.all()
@@ -106,17 +124,21 @@ class GetAllStudentsAPIView(generics.ListAPIView):
     model = Student
     queryset = Student.objects.all()
 
+
 class GetSpecificStudentsAPIView(RetrieveAPIView):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
 
+
 class UpdateStudentsAPIView(generics.UpdateAPIView):
     queryset = Student.objects.all()
+
 
 # Subjects
 class CreateSubjectAPIView(generics.CreateAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
 
 class ListSubjectsAPIView(generics.ListAPIView):
     serializer_class = TermicCourseSerializer
@@ -133,22 +155,27 @@ class ListSubjectsAPIView(generics.ListAPIView):
 
         return queryset
 
+
 class GetSubjectAPIView(generics.RetrieveAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
 
 class UpdateSubjectAPIView(generics.UpdateAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
 
+
 class DeleteSubjectAPIView(generics.DestroyAPIView):
     queryset = TermicCourse.objects.all()
     serializer_class = TermicCourseSerializer
+
 
 # Courses
 class CreateCourseAPIView(generics.CreateAPIView):
     queryset = AbstractCourse.objects.all()
     serializer_class = AbstractCourseSerializer
+
 
 class ListCoursesAPIView(generics.ListAPIView):
     serializer_class = AbstractCourseSerializer
@@ -168,17 +195,21 @@ class ListCoursesAPIView(generics.ListAPIView):
 
         return queryset
 
+
 class GetCourseAPIView(generics.RetrieveAPIView):
     queryset = AbstractCourse.objects.all()
     serializer_class = AbstractCourseSerializer
+
 
 class UpdateCourseAPIView(generics.UpdateAPIView):
     queryset = AbstractCourse.objects.all()
     serializer_class = AbstractCourseSerializer
 
+
 class DeleteCourseAPIView(generics.DestroyAPIView):
     queryset = AbstractCourse.objects.all()
     serializer_class = AbstractCourseSerializer
+
 
 # Course
 class UserCoursesByField(APIView):
@@ -191,4 +222,12 @@ class UserCoursesByField(APIView):
         return Response({"courses": serialized_courses})
 
 
-
+class RemainingTermAPIView(APIView):
+    def get(self, request):
+        username = request.GET.get('username')
+        password = request.GET.get('password')
+        user = User.objects.filter(username=username, password=password)
+        if user:
+            return Response({"sanavat": user.sanavat})
+        else:
+            return Response({'error': 'user not found'})
