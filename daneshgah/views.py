@@ -5,7 +5,7 @@ from django.core.mail import send_mail  # TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User, CourseStudent
+from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User, CourseStudent, EdCert
 from .permissions import IsITPermission
 from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer, \
     AbstractCourseSerializer
@@ -252,4 +252,7 @@ class CourseSubstitutionAPIView(APIView):
         cs = CourseStudent.objects.create(courseToBeAddedID, studentID)
         cs.save()
 
-
+class StudyingEvidencesAPIView(APIView):
+    def get(self, request, pk):
+        edCert = EdCert.objects.all().filter(student_id=pk)
+        return Response({"edCert": edCert})
