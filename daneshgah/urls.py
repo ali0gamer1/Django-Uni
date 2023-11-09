@@ -15,5 +15,6 @@ urlpatterns = [
     path("subjects/update/<int:pk>", UpdateSubjectAPIView.as_view()),
     path("subjects/delete/<int:pk>", DeleteSubjectAPIView.as_view()),
     path("/student/<int:pk>/remaining-terms", RemainingTermAPIView.as_view()),
-    path("/student/<int:pk>/course-selection", CourseSelectionAPIView.as_view())
+    path("/student/<int:pk>/course-selection", CourseSelectionAPIView.as_view()),
+path("/student/<int:pk>/course-substitution", CourseSubstitutionAPIView.as_view())
 ]

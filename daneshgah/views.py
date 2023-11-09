@@ -241,5 +241,15 @@ class CourseSelectionAPIView(APIView):
         cs = CourseStudent.objects.create(courseID, studentID)
         cs.save()
         return Response({"the course student is created"})
+class CourseSubstitutionAPIView(APIView):
+    def post(self,request, pk):
+        studentID = pk
+        courseToBeRemovedID = request.POST.get('courseR')
+        index = 1#todo number of CourseStudent we would like to delete#
+        courseToBeRemoved=CourseStudent.objects.all()[index]
+        courseToBeRemoved.delete()
+        courseToBeAddedID = request.POST.get('CourseA')
+        cs = CourseStudent.objects.create(courseToBeAddedID, studentID)
+        cs.save()
 
 
