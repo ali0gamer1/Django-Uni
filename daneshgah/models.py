@@ -166,6 +166,11 @@ class CourseStudent(models.Model):
     mark = models.FloatField(default=20.0)
     term = models.ManyToManyField(Term, related_name="FixME")
 
+    @classmethod
+    def create(cls, courseID, studentID):
+        courseStudent = cls(student=studentID, course=courseID)
+        return courseStudent
+
 
 class EmergencyDrop(models.Model):
     """

@@ -5,7 +5,7 @@ from django.core.mail import send_mail  # TODO
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User
+from .models import Term, TermicCourse, AbstractCourse, Student, Professor, User, CourseStudent
 from .permissions import IsITPermission
 from .serializers import TermSerializer, UserSerializer, TermicCourseSerializer, ProfessorSerializer, StudentSerializer, \
     AbstractCourseSerializer
@@ -231,3 +231,15 @@ class RemainingTermAPIView(APIView):
             return Response({"sanavat": user.sanavat})
         else:
             return Response({'error': 'user not found'})
+
+class CourseSelectionAPIView(APIView):
+    def post(self, request, pk):
+        courseID=request.POST.get('course')
+        studentID= pk
+        # cs = CourseStudent(course=TermicCourse.objects.filter(courseID), student=Student.objects.filter(studentID))
+        #todo the courseID is undefined in course.
+        cs = CourseStudent.objects.create(courseID, studentID)
+        cs.save()
+        return Response({"the course student is created"})
+
+

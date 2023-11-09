@@ -1,6 +1,5 @@
 from .models import (User, Student, Professor, IT, DeputyofEducation, Term, RevisionRequest,
-                     CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse, TermicCourse,
-                     Subject, AbstractCourse)
+                     CourseStudent, EmergencyDrop, TermDrop, EdCert, Department, Field, SelectedCourse, TermicCourse,AbstractCourse)
 from rest_framework import serializers
 
 
@@ -79,10 +78,10 @@ class TermicCourseSerializer(serializers.ModelSerializer):
         model = TermicCourse
         fields = '__all__'
 
-class SubjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subject
-        fields = '__all__'
+# class SubjectSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Subject
+#         fields = '__all__'
 
 class AbstractCourseSerializer(serializers.ModelSerializer):
     class Meta:
