@@ -257,9 +257,7 @@ class StudyingEvidencesAPIView(APIView):
         edCert = EdCert.objects.all().filter(student_id=pk)
         return Response({"edCert": edCert})
 
-from rest_framework import generics, status
-from rest_framework.response import Response
-
+#RemoveTerm
 class StudentTermRemovalRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TermRemovalRequestSerializer
 
@@ -278,9 +276,7 @@ class AssistantTermRemovalRequestDetailView(generics.RetrieveUpdateAPIView):
     queryset = TermRemovalRequest.objects.all()
     lookup_url_kwarg = 's-pk'
 
-from rest_framework import generics, status
-from rest_framework.response import Response
-
+#EmergencyRemove
 class StudentEmergencyRemoveRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmergencyRemoveRequestSerializer
 
