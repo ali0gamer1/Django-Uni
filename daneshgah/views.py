@@ -256,3 +256,46 @@ class StudyingEvidencesAPIView(APIView):
     def get(self, request, pk):
         edCert = EdCert.objects.all().filter(student_id=pk)
         return Response({"edCert": edCert})
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+
+class StudentTermRemovalRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TermRemovalRequestSerializer
+
+    def get_queryset(self):
+        student_id = self.kwargs['student_id']
+        return TermRemovalRequest.objects.filter(student_id=student_id)
+
+
+class AssistantTermRemovalRequestListView(generics.ListAPIView):
+    serializer_class = TermRemovalRequestSerializer
+    queryset = TermRemovalRequest.objects.filter(status='pending')
+
+
+class AssistantTermRemovalRequestDetailView(generics.RetrieveUpdateAPIView):
+    serializer_class = TermRemovalRequestSerializer
+    queryset = TermRemovalRequest.objects.all()
+    lookup_url_kwarg = 's-pk'
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+
+class StudentEmergencyRemoveRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = EmergencyRemoveRequestSerializer
+
+    def get_queryset(self):
+        student_id = self.kwargs['student_id']
+        course_id = self.kwargs['course_id']
+        return EmergencyRemoveRequest.objects.filter(student_id=student_id, course_id=course_id)
+
+
+class AssistantEmergencyRemoveRequestListView(generics.ListAPIView):
+    serializer_class = EmergencyRemoveRequestSerializer
+    queryset = EmergencyRemoveRequest.objects.filter(status='pending')
+
+
+class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
+    serializer_class = EmergencyRemoveRequestSerializer
+    queryset = EmergencyRemoveRequest.objects.all()
+    lookup_url_kwarg = 's-pk'
