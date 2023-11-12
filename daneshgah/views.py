@@ -13,12 +13,12 @@ from .models import (
     Professor,
     User,
     CourseStudent,
-    EdCert,
+    EdCert, TermDrop, EmergencyDrop,
 )
 from .permissions import IsITPermission
-from .serializers import (  TermSerializer, UserSerializer, TermicCourseSerializer, 
-                            ProfessorSerializer, StudentSerializer, 
-                            AbstractCourseSerializer)
+from .serializers import (TermSerializer, UserSerializer, TermicCourseSerializer,
+                          ProfessorSerializer, StudentSerializer,
+                          AbstractCourseSerializer, TermDropSerializer, EmergencyDropSerializer)
 from rest_framework.generics import RetrieveAPIView
 
 
@@ -265,39 +265,39 @@ class StudyingEvidencesAPIView(APIView):
 
 #RemoveTerm
 class StudentTermRemovalRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = TermRemovalRequestSerializer
+    serializer_class = TermDropSerializer
 
     def get_queryset(self):
         student_id = self.kwargs['student_id']
-        return TermRemovalRequest.objects.filter(student_id=student_id)
+        return TermDrop.objects.filter(student_id=student_id)
 
 
 class AssistantTermRemovalRequestListView(generics.ListAPIView):
-    serializer_class = TermRemovalRequestSerializer
-    queryset = TermRemovalRequest.objects.filter(status='pending')
+    serializer_class = TermDropSerializer
+    queryset = TermDrop.objects.filter(status='pending')
 
 
 class AssistantTermRemovalRequestDetailView(generics.RetrieveUpdateAPIView):
-    serializer_class = TermRemovalRequestSerializer
-    queryset = TermRemovalRequest.objects.all()
+    serializer_class = TermDropSerializer
+    queryset = TermDrop.objects.all()
     lookup_url_kwarg = 's-pk'
 
 #EmergencyRemove
 class StudentEmergencyRemoveRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = EmergencyRemoveRequestSerializer
+    serializer_class = EmergencyDropSerializer
 
     def get_queryset(self):
         student_id = self.kwargs['student_id']
         course_id = self.kwargs['course_id']
-        return EmergencyRemoveRequest.objects.filter(student_id=student_id, course_id=course_id)
+        return EmergencyDrop.objects.filter(student_id=student_id, course_id=course_id)
 
 
 class AssistantEmergencyRemoveRequestListView(generics.ListAPIView):
-    serializer_class = EmergencyRemoveRequestSerializer
-    queryset = EmergencyRemoveRequest.objects.filter(status='pending')
+    serializer_class = EmergencyDropSerializer
+    queryset = EmergencyDrop.objects.filter(status='pending')
 
 
 class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
-    serializer_class = EmergencyRemoveRequestSerializer
-    queryset = EmergencyRemoveRequest.objects.all()
+    serializer_class = EmergencyDropSerializer
+    queryset = EmergencyDrop.objects.all()
     lookup_url_kwarg = 's-pk'
