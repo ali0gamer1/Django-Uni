@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from daneshgah.models import Professor, Student, IT, DeputyofEducation
+from daneshgah.models import Professor, IT, DeputyofEducation
 
 
 class IsProfessorPermission(permissions.BasePermission):

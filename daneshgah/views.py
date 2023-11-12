@@ -16,14 +16,9 @@ from .models import (
     EdCert,
 )
 from .permissions import IsITPermission
-from .serializers import (
-    TermSerializer,
-    UserSerializer,
-    TermicCourseSerializer,
-    ProfessorSerializer,
-    StudentSerializer,
-    AbstractCourseSerializer,
-)
+from .serializers import (  TermSerializer, UserSerializer, TermicCourseSerializer, 
+                            ProfessorSerializer, StudentSerializer, 
+                            AbstractCourseSerializer)
 from rest_framework.generics import RetrieveAPIView
 
 
@@ -53,8 +48,8 @@ class LoginAPIView(APIView):
     permission_classes = [IsITPermission]
 
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
+        username = request.data.get('username')
+        password = request.data.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -76,10 +71,10 @@ class ChangePasswordAPIView(APIView):
     permission_classes = [IsITPermission]
 
     def post(self, request):
-        password = request.data.get("password")
-        newPassword = request.data.get("newPassword")
-        username = request.data.get("username")
-        password = request.data.get("password")
+        password = request.data.get('password')
+        newPassword = request.data.get('newPassword')
+        username = request.data.get('username')
+        password = request.data.get('password')
         # TODO: implement email verification
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -158,8 +153,8 @@ class ListSubjectsAPIView(generics.ListAPIView):
     serializer_class = TermicCourseSerializer
 
     def get_queryset(self):
-        faculty = self.request.query_params.get("faculty", None)
-        name = self.request.query_params.get("name", None)
+        faculty = self.request.query_params.get('faculty', None)
+        name = self.request.query_params.get('name', None)
         queryset = TermicCourse.objects.all()
 
         if faculty:
@@ -194,9 +189,9 @@ class ListCoursesAPIView(generics.ListAPIView):
     serializer_class = AbstractCourseSerializer
 
     def get_queryset(self):
-        faculty = self.request.query_params.get("faculty", None)
-        name = self.request.query_params.get("name", None)
-        term = self.request.query_params.get("term", None)
+        faculty = self.request.query_params.get('faculty', None)
+        name = self.request.query_params.get('name', None)
+        term = self.request.query_params.get('term', None)
         queryset = AbstractCourse.objects.all()
         if faculty:
             queryset = queryset.filter(faculty=faculty)
@@ -227,93 +222,82 @@ class UserCoursesByField(APIView):
     def get(self, request):
         user = request.user
         field_of_study = user.field_of_study
-        related_courses = AbstractCourse.objects.filter(
-            subject__field_of_study=field_of_study
-        )
+        related_courses = AbstractCourse.objects.filter(subject__field_of_study=field_of_study)
         serialized_courses = [course.to_dict() for course in related_courses]
         return Response({"courses": serialized_courses})
 
 
 class RemainingTermAPIView(APIView):
     def get(self, request):
-        username = request.GET.get("username")
-        password = request.GET.get("password")
+        username = request.GET.get('username')
+        password = request.GET.get('password')
         user = User.objects.filter(username=username, password=password)
         if user:
             return Response({"sanavat": user.sanavat})
         else:
-            return Response({"error": "user not found"})
+            return Response({'error': 'user not found'})
 
 
 class CourseSelectionAPIView(APIView):
     def post(self, request, pk):
-        courseID = request.POST.get("course")
-        studentID = pk
+        courseID=request.POST.get('course')
+        studentID= pk
         cs = CourseStudent.objects.create(courseID, studentID)
         cs.save()
         return Response({"the course student is created"})
 
 
 class CourseSubstitutionAPIView(APIView):
-    def post(self, request, pk):
+    def post(self,request, pk):
         studentID = pk
-        courseToBeRemovedID = request.POST.get("courseR")
-        index = 1  # todo number of CourseStudent we would like to delete#
-        courseToBeRemoved = CourseStudent.objects.all()[index]
+        courseToBeRemovedID = request.POST.get('courseR')
+        index = 1#todo number of CourseStudent we would like to delete#
+        courseToBeRemoved=CourseStudent.objects.all()[index]
         courseToBeRemoved.delete()
-        courseToBeAddedID = request.POST.get("CourseA")
+        courseToBeAddedID = request.POST.get('CourseA')
         cs = CourseStudent.objects.create(courseToBeAddedID, studentID)
         cs.save()
-
 
 class StudyingEvidencesAPIView(APIView):
     def get(self, request, pk):
         edCert = EdCert.objects.all().filter(student_id=pk)
         return Response({"edCert": edCert})
 
-
-# RemoveTerm
-class StudentTermRemovalRequestView(
-    generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView
-):
+#RemoveTerm
+class StudentTermRemovalRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TermRemovalRequestSerializer
 
     def get_queryset(self):
-        student_id = self.kwargs["student_id"]
+        student_id = self.kwargs['student_id']
         return TermRemovalRequest.objects.filter(student_id=student_id)
 
 
 class AssistantTermRemovalRequestListView(generics.ListAPIView):
     serializer_class = TermRemovalRequestSerializer
-    queryset = TermRemovalRequest.objects.filter(status="pending")
+    queryset = TermRemovalRequest.objects.filter(status='pending')
 
 
 class AssistantTermRemovalRequestDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = TermRemovalRequestSerializer
     queryset = TermRemovalRequest.objects.all()
-    lookup_url_kwarg = "s-pk"
+    lookup_url_kwarg = 's-pk'
 
-
-# EmergencyRemove
-class StudentEmergencyRemoveRequestView(
-    generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView
-):
+#EmergencyRemove
+class StudentEmergencyRemoveRequestView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmergencyRemoveRequestSerializer
 
     def get_queryset(self):
-        student_id = self.kwargs["student_id"]
-        course_id = self.kwargs["course_id"]
-        return EmergencyRemoveRequest.objects.filter(
-            student_id=student_id, course_id=course_id
-        )
+        student_id = self.kwargs['student_id']
+        course_id = self.kwargs['course_id']
+        return EmergencyRemoveRequest.objects.filter(student_id=student_id, course_id=course_id)
 
 
 class AssistantEmergencyRemoveRequestListView(generics.ListAPIView):
     serializer_class = EmergencyRemoveRequestSerializer
-    queryset = EmergencyRemoveRequest.objects.filter(status="pending")
+    queryset = EmergencyRemoveRequest.objects.filter(status='pending')
 
 
 class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = EmergencyRemoveRequestSerializer
     queryset = EmergencyRemoveRequest.objects.all()
-    lookup_url_kwarg = "s-pk"
+    lookup_url_kwarg = 's-pk'
