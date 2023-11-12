@@ -301,3 +301,38 @@ class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = EmergencyDropSerializer
     queryset = EmergencyDrop.objects.all()
     lookup_url_kwarg = 's-pk'
+
+#Student_Selection_form
+class ProfessorSelectionFormsListView(generics.ListAPIView):
+    serializer_class = SelectionFormSerializer
+
+    def get_queryset(self):
+        professor_id = self.kwargs['pk']
+        return SelectionForm.objects.filter(professor_id=professor_id)
+
+
+class ProfessorSelectionFormDetailView(generics.RetrieveAPIView):
+    serializer_class = SelectionFormSerializer
+    queryset = SelectionForm.objects.all()
+    lookup_url_kwarg = 's-pk'
+
+
+class ProfessorSelectionFormActionView(generics.UpdateAPIView):
+    serializer_class = SelectionFormSerializer
+    queryset = SelectionForm.objects.all()
+    lookup_url_kwarg = 's-pk'
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        action = request.data.get('action', '').lower()
+
+#TODO
+        if action == 'reject':
+            # rejection
+            instance.status = 'rejected'
+        elif action == 'approve':
+            # approval, send an email to the student
+            instance.status = 'approved'
+
+        instance.save()
+        return Response({"message": "Selection form updated successfully"}, status=status.HTTP_200_OK)
