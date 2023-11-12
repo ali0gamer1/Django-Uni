@@ -218,7 +218,7 @@ class EmergencyDrop(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-
+    status = models.CharField(max_length=255) #todo
 
 class TermDrop(models.Model):
     """
@@ -230,7 +230,7 @@ class TermDrop(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-
+    status = models.CharField(max_length=255)
 
 class EdCert(models.Model):
     """
