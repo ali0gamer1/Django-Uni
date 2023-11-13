@@ -113,7 +113,7 @@ class Student(User):
     """
     Model implementation for Student
     """
-
+    student_id = models.CharField(max_length=10)
     start_year = models.DateField()
     start_term = models.DateField()
     average_mark = models.FloatField()

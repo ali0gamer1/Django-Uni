@@ -18,7 +18,8 @@ from .models import (
 from .permissions import IsITPermission
 from .serializers import (TermSerializer, UserSerializer, TermicCourseSerializer,
                           ProfessorSerializer, StudentSerializer,
-                          AbstractCourseSerializer, TermDropSerializer, EmergencyDropSerializer)
+                          AbstractCourseSerializer, TermDropSerializer, EmergencyDropSerializer,
+                          CourseStudentSerializer)
 from rest_framework.generics import RetrieveAPIView
 
 
@@ -301,3 +302,20 @@ class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = EmergencyDropSerializer
     queryset = EmergencyDrop.objects.all()
     lookup_url_kwarg = 's-pk'
+
+class MyCoursesAPIView(APIView):
+    def get(self, request, pk):
+        currStudent = Student.objects.filter(student_id=pk)
+        # currCourses = Student.objects.get(pk).current_courses.all()
+        courseTakenBefore = Student.objects.get(pk).passed_courses.all()
+        availableCourses = TermicCourse.objects.exclude(id__in=courseTakenBefore)
+        serializer = TermicCourseSerializer(availableCourses, many=True)
+        #todo show pishniaz and hamniaz foreach course, unable to test
+        return Response(serializer.data)
+
+
+class PassCourseAPIView(APIView):
+    def get(self, request, pk):
+        courseTakenBefore = Student.objects.get(pk).passed_courses.all()
+        serializer = TermicCourseSerializer(courseTakenBefore, many=True)
+        return Response(serializer.data)
