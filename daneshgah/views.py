@@ -319,3 +319,6 @@ class PassCourseAPIView(APIView):
         courseTakenBefore = Student.objects.get(pk).passed_courses.all()
         serializer = TermicCourseSerializer(courseTakenBefore, many=True)
         return Response(serializer.data)
+
+class TermCoursesAPIView(APIView):
+    pass

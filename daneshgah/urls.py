@@ -13,7 +13,7 @@ from .views import (
     RemainingTermAPIView,
     CourseSelectionAPIView,
     CourseSubstitutionAPIView,
-    StudyingEvidencesAPIView, MyCoursesAPIView,
+    StudyingEvidencesAPIView, MyCoursesAPIView, PassCourseAPIView,
 )
 
 urlpatterns = [
@@ -33,4 +33,5 @@ urlpatterns = [
     path("student/<int:pk>/studying-evidences", StudyingEvidencesAPIView.as_view()),
     path("student/<int:pk>/my-courses", MyCoursesAPIView.as_view()),
     path("student/<int:pk>/pass-course-report",PassCourseAPIView.as_view()),
+path("student/<int:pk>/term-courses",TermCoursesAPIView.as_view()),
 ]
