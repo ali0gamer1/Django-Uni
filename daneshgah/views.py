@@ -321,4 +321,7 @@ class PassCourseAPIView(APIView):
         return Response(serializer.data)
 
 class TermCoursesAPIView(APIView):
-    pass
+    def get(self, request, pk):
+        courseTaken = Student.objects.get(pk).current_courses.all()
+        serializer = TermicCourseSerializer(courseTaken, many=True)
+        return Response(serializer.data)
