@@ -36,5 +36,6 @@ urlpatterns = [
     path("student/<int:pk>/pass-course-report", PassCourseAPIView.as_view()),
     # path("student/<int:pk>/term-courses", TermCoursesAPIView.as_view()),
     path("assistant/<int:pk>/studying-evidence", CheckAllStudyingEvidenceAPIView.as_view()),
-    path("professor/<int:pk>/courses/<int:c_pk>/appeal-requests", ProfessorApealRequestAPIView.as_view())
+    path("professor/<int:pk>/courses/<int:c_pk>/appeal-requests", ProfessorApealRequestAPIView.as_view()),
+    path("assistant/<int:pk>/courses/<int:c_pk>/prof-approved", AdminCheckProfessorAPIView.as_view())
 ]

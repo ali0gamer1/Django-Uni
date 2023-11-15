@@ -335,3 +335,8 @@ class ProfessorApealRequestAPIView(APIView):
         appealRequests = RevisionRequest.objects.filter(course_id=c_pk)
         serializer = RevisionRequestSerializer(appealRequests, many=True)
         return Response(serializer.data)
+
+class AdminCheckProfessorAPIView(APIView):
+    pass
+    #todo IDK HOW TO IMPLEMENT IT.
+
