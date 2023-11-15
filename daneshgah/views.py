@@ -13,13 +13,13 @@ from .models import (
     Professor,
     User,
     CourseStudent,
-    EdCert, TermDrop, EmergencyDrop,
+    EdCert, TermDrop, EmergencyDrop, RevisionRequest,
 )
 from .permissions import IsITPermission
 from .serializers import (TermSerializer, UserSerializer, TermicCourseSerializer,
                           ProfessorSerializer, StudentSerializer,
                           AbstractCourseSerializer, TermDropSerializer, EmergencyDropSerializer,
-                          CourseStudentSerializer)
+                          CourseStudentSerializer, EdCertSerializer, RevisionRequestSerializer)
 from rest_framework.generics import RetrieveAPIView
 
 
@@ -324,4 +324,14 @@ class TermCoursesAPIView(APIView):
     def get(self, request, pk):
         courseTaken = Student.objects.get(pk).current_courses.all()
         serializer = TermicCourseSerializer(courseTaken, many=True)
+        return Response(serializer.data)
+class CheckAllStudyingEvidenceAPIView(generics.ListAPIView):
+    serializer_class = EdCertSerializer
+    queryset = EdCert.objects.all()
+    # todo not sure about queryset
+
+class ProfessorApealRequestAPIView(APIView):
+    def get(self, pk, c_pk):
+        appealRequests = RevisionRequest.objects.filter(course_id=c_pk)
+        serializer = RevisionRequestSerializer(appealRequests, many=True)
         return Response(serializer.data)
