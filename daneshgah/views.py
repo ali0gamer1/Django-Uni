@@ -340,3 +340,18 @@ class AdminCheckProfessorAPIView(APIView):
     pass
     #todo IDK HOW TO IMPLEMENT IT.
 
+
+class StudentSubstitutionAPIView(APIView):
+    def get(self, request, pk):
+        currentCourseStudent = CourseStudent.objects.filter(student_id=pk)
+        serializer = CourseStudentSerializer(currentCourseStudent, many=True)
+        return Response(serializer.data)
+        # return Response({"currentCourseStudent": currentCourseStudent})
+
+
+class StudentSubstitutionALLAPIView(APIView):
+    def get(self, request):
+        currentCourseStudentall = CourseStudent.objects.all()
+        serializer = CourseStudentSerializer(currentCourseStudentall, many=True)
+        return Response(serializer.data)
+        # return Response({"currentCourseStudentall": currentCourseStudentall})
