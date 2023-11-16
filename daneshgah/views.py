@@ -306,11 +306,9 @@ class AssistantEmergencyRemoveRequestDetailView(generics.RetrieveUpdateAPIView):
 class MyCoursesAPIView(APIView):
     def get(self, request, pk):
         currStudent = Student.objects.filter(student_id=pk)
-        # currCourses = Student.objects.get(pk).current_courses.all()
         courseTakenBefore = Student.objects.get(pk).passed_courses.all()
         availableCourses = TermicCourse.objects.exclude(id__in=courseTakenBefore)
         serializer = TermicCourseSerializer(availableCourses, many=True)
-        #todo show pishniaz and hamniaz foreach course, unable to test
         return Response(serializer.data)
 
 
@@ -320,15 +318,22 @@ class PassCourseAPIView(APIView):
         serializer = TermicCourseSerializer(courseTakenBefore, many=True)
         return Response(serializer.data)
 
+
 class TermCoursesAPIView(APIView):
     def get(self, request, pk):
         courseTaken = Student.objects.get(pk).current_courses.all()
         serializer = TermicCourseSerializer(courseTaken, many=True)
         return Response(serializer.data)
+
+
 class CheckAllStudyingEvidenceAPIView(generics.ListAPIView):
     serializer_class = EdCertSerializer
-    queryset = EdCert.objects.all()
-    # todo not sure about queryset
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        queryset = EdCert.objects.filter(student_id=pk)
+        return queryset
+
 
 class ProfessorApealRequestAPIView(APIView):
     def get(self, pk, c_pk):
