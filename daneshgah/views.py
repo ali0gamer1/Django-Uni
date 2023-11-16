@@ -249,15 +249,17 @@ class CourseSelectionAPIView(APIView):
 
 
 class CourseSubstitutionAPIView(APIView):
-    def post(self,request, pk):
+    def post(self,request, pk, rid, aid):
         studentID = pk
         courseToBeRemovedID = request.POST.get('courseR')
-        index = 1#todo number of CourseStudent we would like to delete#
-        courseToBeRemoved=CourseStudent.objects.all()[index]
-        courseToBeRemoved.delete()
+        if courseToBeRemovedID is not None:
+            courseToBeRemoved=CourseStudent.objects.all(student_id=pk, course_id=courseToBeRemovedID)
+            courseToBeRemoved.delete()
         courseToBeAddedID = request.POST.get('CourseA')
-        cs = CourseStudent.objects.create(courseToBeAddedID, studentID)
-        cs.save()
+        if courseToBeAddedID is not None:
+            cs = CourseStudent.objects.create(courseToBeAddedID, studentID)
+            cs.save()
+
 
 class StudyingEvidencesAPIView(APIView):
     def get(self, request, pk):
