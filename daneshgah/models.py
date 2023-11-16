@@ -113,7 +113,8 @@ class Student(User):
     """
     Model implementation for Student
     """
-    student_id = models.CharField(max_length=10, default='')
+
+    student_id = models.CharField(max_length=10, default="")
     start_year = models.DateField()
     start_term = models.DateField()
     average_mark = models.FloatField()
@@ -220,6 +221,7 @@ class EmergencyDrop(models.Model):
     response = models.TextField()
     status = models.IntegerField(default=0)
 
+
 class TermDrop(models.Model):
     """
     Model implementation for TermDrop
@@ -231,6 +233,7 @@ class TermDrop(models.Model):
     request = models.TextField()
     response = models.TextField()
     status = models.IntegerField(default=0)
+
 
 class EdCert(models.Model):
     """

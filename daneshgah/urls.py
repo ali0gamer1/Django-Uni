@@ -14,7 +14,10 @@ from .views import (
     RemainingTermAPIView,
     CourseSelectionAPIView,
     CourseSubstitutionAPIView,
-    StudyingEvidencesAPIView, MyCoursesAPIView, PassCourseAPIView, CheckAllStudyingEvidenceAPIView,
+    StudyingEvidencesAPIView,
+    MyCoursesAPIView,
+    PassCourseAPIView,
+    CheckAllStudyingEvidenceAPIView,
     ProfessorApealRequestAPIView,
 )
 
@@ -36,6 +39,12 @@ urlpatterns = [
     path("student/<int:pk>/my-courses", MyCoursesAPIView.as_view()),
     path("student/<int:pk>/pass-course-report", PassCourseAPIView.as_view()),
     path("student/<int:pk>/term-courses", TermCoursesAPIView.as_view()),
-    path("assistant/<int:pk>/studying-evidence", CheckAllStudyingEvidenceAPIView.as_view()),
-    path("professor/<int:pk>/courses/<int:c_pk>/appeal-requests", ProfessorApealRequestAPIView.as_view()),
+    path(
+        "assistant/<int:pk>/studying-evidence",
+        CheckAllStudyingEvidenceAPIView.as_view(),
+    ),
+    path(
+        "professor/<int:pk>/courses/<int:c_pk>/appeal-requests",
+        ProfessorApealRequestAPIView.as_view(),
+    ),
 ]

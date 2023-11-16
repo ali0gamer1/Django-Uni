@@ -7,18 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('daneshgah', '0001_initial'),
+        ("daneshgah", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='edcert',
-            name='file',
-            field=models.FileField(default='settings.MEDIA_ROOT/educerts/nothing.pdf', storage=django.core.files.storage.FileSystemStorage(location=''), upload_to='educerts'),
+            model_name="edcert",
+            name="file",
+            field=models.FileField(
+                default="settings.MEDIA_ROOT/educerts/nothing.pdf",
+                storage=django.core.files.storage.FileSystemStorage(location=""),
+                upload_to="educerts",
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='pfp',
-            field=models.FileField(default='settings.MEDIA_ROOT/portraits/anon.png', storage=django.core.files.storage.FileSystemStorage(location=''), upload_to='portraits'),
+            model_name="user",
+            name="pfp",
+            field=models.FileField(
+                default="settings.MEDIA_ROOT/portraits/anon.png",
+                storage=django.core.files.storage.FileSystemStorage(location=""),
+                upload_to="portraits",
+            ),
         ),
     ]

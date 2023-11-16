@@ -6,28 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('daneshgah', '0002_edcert_file_user_pfp'),
+        ("daneshgah", "0002_edcert_file_user_pfp"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='birth_date',
-            field=models.DateField(default='2000-01-01'),
+            model_name="user",
+            name="birth_date",
+            field=models.DateField(default="2000-01-01"),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='national_id',
-            field=models.CharField(default='-1', max_length=10),
+            model_name="user",
+            name="national_id",
+            field=models.CharField(default="-1", max_length=10),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='phone_number',
-            field=models.CharField(default='-1', max_length=11),
+            model_name="user",
+            name="phone_number",
+            field=models.CharField(default="-1", max_length=11),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='uniquenum',
-            field=models.CharField(default='-1', max_length=20),
+            model_name="user",
+            name="uniquenum",
+            field=models.CharField(default="-1", max_length=20),
         ),
     ]
