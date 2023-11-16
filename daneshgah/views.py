@@ -343,10 +343,6 @@ class ProfessorApealRequestAPIView(APIView):
         serializer = RevisionRequestSerializer(appealRequests, many=True)
         return Response(serializer.data)
 
-class AdminCheckProfessorAPIView(APIView):
-    pass
-    #todo IDK HOW TO IMPLEMENT IT.
-
 
 class StudentSubstitutionAPIView(APIView):
     def get(self, request, pk):
