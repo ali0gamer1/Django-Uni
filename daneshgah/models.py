@@ -113,7 +113,7 @@ class Student(User):
     """
     Model implementation for Student
     """
-    student_id = models.CharField(max_length=10)
+    student_id = models.CharField(max_length=10, default='')
     start_year = models.DateField()
     start_term = models.DateField()
     average_mark = models.FloatField()
@@ -218,7 +218,7 @@ class EmergencyDrop(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-    status = models.CharField(max_length=255) #todo
+    status = models.IntegerField(default=0)
 
 class TermDrop(models.Model):
     """
@@ -230,7 +230,7 @@ class TermDrop(models.Model):
     result = models.BooleanField(default=False)
     request = models.TextField()
     response = models.TextField()
-    status = models.CharField(max_length=255)
+    status = models.IntegerField(default=0)
 
 class EdCert(models.Model):
     """
