@@ -28,7 +28,7 @@ urlpatterns = [
     path("users/login/", LoginAPIView.as_view()),
     path("users/logout/", LogoutAPIView.as_view()),
     path("users/changePassword", ChangePasswordAPIView.as_view()),
-    path("subjects/get_all_subjects", GetAllSubjectsAPIView.as_view()),
+    path("subjects/get_all_subjects", GetAllSubjectsAPIView.as_view(), name='all_subjects'),
     path("subjects/create_subject", CreateSubjectAPIView.as_view()),
     path("subjects/update/<int:pk>", UpdateSubjectAPIView.as_view()),
     path("subjects/delete/<int:pk>", DeleteSubjectAPIView.as_view()),
